@@ -25,11 +25,9 @@ db.serialize(function() {
 			if(message.body == "wru" || message.body == "Wru"|| message.body == "Where are you")
 			{
 				db.get("SELECT latitude,longitude FROM current_location", function(err, row) {
-		
 			    var image =	"https://maps.googleapis.com/maps/api/staticmap?size=512x512&maptype=roadmap\&markers=size:mid%50Ccolor:red%7C"+row['latitude']+","+row['longitude']+"&key=AIzaSyBfJkwgvA3XKkS5Y5dHl4gF6e5GjW56HoA";
-				message.reply("The current location is" +" "+ (image));
-		});
-              
+				message.reply("The current location is" +" "+ (image));	
+		        });
 			}
 			else if(message.body == "Send anand image" || message.body == "Send Anand image")
 			{
@@ -38,8 +36,8 @@ db.serialize(function() {
                 var stream = gm().address(row['latitude']+', '+row['longitude']).staticMap().done();
                 stream.pipe(fs.createWriteStream('map.png'));
 
-				bot.send(Bot.Message.picture('http://anandraj.herokuapp.com/images/anand.jpg')
-					.setAttributionName('Anand Rajendran')
+				bot.send(Bot.Message.picture('http://anandraj.herokuapp.com/images/map.png')
+					.setAttributionName('Current Location')
 					.setAttributionIcon('http://s.imgur.com/images/favicon-96x96.png'),
 					message.from);
 			}
