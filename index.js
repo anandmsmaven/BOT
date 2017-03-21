@@ -8,8 +8,8 @@ let Bot = require('@kikinteractive/kik');
 let bot = new Bot({
 username: 'ananbh',
 apiKey: 'e44c35d3-dc25-44f9-993b-f3038537f7c6',
-baseUrl: 'https://ce4d9b3c.ngrok.io'
-//baseUrl: 'https://ananbh.herokuapp.com/'
+//baseUrl: 'https://ce4d9b3c.ngrok.io'
+baseUrl: 'https://ananbh.herokuapp.com/'
 });
 bot.updateBotConfiguration();
 bot.onTextMessage((message) => {
@@ -38,7 +38,7 @@ db.serialize(function() {
                 var stream = gm().address(row['latitude']+', '+row['longitude']).staticMap().done();
                 stream.pipe(fs.createWriteStream(__dirname+'/www/image/map.png'));
 
-				bot.send(Bot.Message.picture('http://ananbh.herokuapp.com/map.png')
+				bot.send(Bot.Message.picture('http://ananbh.herokuapp.com/image/map.png')
 					.setAttributionName('Current Location')
 					.setAttributionIcon('http://s.imgur.com/images/favicon-96x96.png'),
 					message.from);
