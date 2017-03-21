@@ -24,14 +24,14 @@ db.serialize(function() {
 		}
 		else 
         {
-			if(message.body == "wru" || message.body == "Wru"|| message.body == "Where are you")
+			if(message.body == 'send url')
 			{
 				db.get("SELECT latitude,longitude FROM current_location", function(err, row) {
 			    var image =	"https://maps.googleapis.com/maps/api/staticmap?size=512x512&maptype=roadmap\&markers=size:mid%50Ccolor:red%7C"+row['latitude']+","+row['longitude']+"&key=AIzaSyBfJkwgvA3XKkS5Y5dHl4gF6e5GjW56HoA";
 				message.reply("The current location is" +" "+ (image));	
 		        });
 			}
-			else if(message.body == "Send anand image" || message.body == "Send Anand image")
+			else if(message.body == "wru" || message.body == "Wru"|| message.body == "Where are you")
 			{
                 var fs = require('fs');
                 var gm = require('google-static-map').set('AIzaSyBfJkwgvA3XKkS5Y5dHl4gF6e5GjW56HoA');
@@ -80,7 +80,6 @@ app.get('/message', function(req, res){
 	});
 });
 
- 
 app.use(bot.incoming());
 
 app.listen(process.env.PORT || 8080, function(){
