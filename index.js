@@ -8,8 +8,8 @@ let Bot = require('@kikinteractive/kik');
 let bot = new Bot({
 username: 'ananbh',
 apiKey: 'e44c35d3-dc25-44f9-993b-f3038537f7c6',
-//baseUrl: 'https://ce4d9b3c.ngrok.io'
-baseUrl: 'https://ananbh.herokuapp.com/'
+//baseUrl: 'https://ce4d9b3c.ngrok.io/message'
+baseUrl: 'https://ananbh.herokuapp.com/message'
 });
 bot.updateBotConfiguration();
 bot.onTextMessage((message) => {
