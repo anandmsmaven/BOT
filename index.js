@@ -1,13 +1,15 @@
 'use strict';
 let util = require('util');
-let http = require('http');
+var express = require("express"),
+app = express();
+app.use(express.static(__dirname + '/www'));
 let Bot = require('@kikinteractive/kik');
 // Configure the bot API endpoint, details for your bot
 let bot = new Bot({
 username: 'ananbh',
 apiKey: 'e44c35d3-dc25-44f9-993b-f3038537f7c6',
-//baseUrl: 'https://245b5b5a.ngrok.io'
-baseUrl: 'https://ananbh.herokuapp.com/'
+baseUrl: 'https://ce4d9b3c.ngrok.io'
+//baseUrl: 'https://ananbh.herokuapp.com/'
 });
 bot.updateBotConfiguration();
 bot.onTextMessage((message) => {
@@ -34,7 +36,7 @@ db.serialize(function() {
                 var fs = require('fs');
                 var gm = require('google-static-map').set('AIzaSyBfJkwgvA3XKkS5Y5dHl4gF6e5GjW56HoA');
                 var stream = gm().address(row['latitude']+', '+row['longitude']).staticMap().done();
-                stream.pipe(fs.createWriteStream('map.png'));
+                stream.pipe(fs.createWriteStream(__dirname+'/www/image/map.png'));
 
 				bot.send(Bot.Message.picture('http://ananbh.herokuapp.com/map.png')
 					.setAttributionName('Current Location')
@@ -63,6 +65,24 @@ db.serialize(function() {
 });
 });
 // Set up your server and start listening
-let server = http
-.createServer(bot.incoming())
-.listen(process.env.PORT || 8080);
+app.get('/', function(req, res){
+	res.send('Hello. This is a demo Kik chatbot. Visit @hello.bot in Kik.');
+});
+
+
+/**
+ * @param message {query param}
+ */
+app.get('/message', function(req, res){
+	console.log(req.query);
+	processTextMessage(req.query.message, function(err, response){
+		res.send(response);
+	});
+});
+
+ 
+app.use(bot.incoming());
+
+app.listen(process.env.PORT || 8080, function(){
+	console.log('Server started on port ' + (process.env.PORT || 8080));
+});

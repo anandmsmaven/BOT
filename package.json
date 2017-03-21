@@ -11,6 +11,7 @@
   "license": "ISC",
   "dependencies": {
     "@kikinteractive/kik": "^2.1.0",
+    "express": "^4.15.2",
     "sqlite3": "^3.1.8",
     "util": "^0.10.3"
   }
