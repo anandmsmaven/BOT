@@ -2,9 +2,12 @@
 let util = require('util');
 var express = require("express"),
 app = express();
+var server = require('http').createServer(app);
+var io = require('socket.io')(server);
 app.use(express.static(__dirname + '/www'));
 let Bot = require('@kikinteractive/kik');
 // Configure the bot API endpoint, details for your bot
+var socket_io = null;
 let bot = new Bot({
 username: 'ananbh',
 apiKey: 'e44c35d3-dc25-44f9-993b-f3038537f7c6',
@@ -33,15 +36,29 @@ db.serialize(function() {
 			}
 			else if(message.body == "wru" || message.body == "Wru"|| message.body == "Where are you")
 			{
-                var fs = require('fs');
-                var gm = require('google-static-map').set('AIzaSyBfJkwgvA3XKkS5Y5dHl4gF6e5GjW56HoA');
-                var stream = gm().address(row['latitude']+', '+row['longitude']).staticMap().done();
-                stream.pipe(fs.createWriteStream(__dirname+'/www/image/map.png'));
+				var oOut = {
+					from: message.username,
+					message: message.body
+				};
+				if (socket_io != null) {
 
-				bot.send(Bot.Message.picture('http://ananbh.herokuapp.com/image/map.png')
-					.setAttributionName('Current Location')
-					.setAttributionIcon('http://s.imgur.com/images/favicon-96x96.png'),
-					message.from);
+					socket_io.emit("receive message", oOut)
+					// when the client emits 'receive message', this listens and executes
+					socket.on('receive message', function (data) {
+
+						var fs = require('fs');
+						var gm = require('google-static-map').set('AIzaSyBfJkwgvA3XKkS5Y5dHl4gF6e5GjW56HoA');
+						var stream = gm().address(data.latitude + ', ' + data.longitude).staticMap().done();
+						stream.pipe(fs.createWriteStream(__dirname + '/www/image/map.png'));
+
+						bot.send(Bot.Message.picture('http://ananbh.herokuapp.com/image/map.png')
+							.setAttributionName('Current Location')
+							.setAttributionIcon('http://s.imgur.com/images/favicon-96x96.png'),
+							message.from);
+					});
+				} else {
+					message.reply("no connection to zombie overlords")
+				}
 			}
 			else if(message.body == "Do you know anand" || message.body == "Do u know anand" || message.body == "Do u know Anand")
 			{
@@ -65,9 +82,9 @@ db.serialize(function() {
 });
 });
 // Set up your server and start listening
-app.get('/', function(req, res){
-	res.send('Hello. This is a demo Kik chatbot. Visit @hello.bot in Kik.');
-});
+//app.get('/', function(req, res){
+	//res.send('Hello. This is a demo Kik chatbot. Visit @hello.bot in Kik.');
+//});
 
 
 /**
@@ -81,7 +98,12 @@ app.get('/message', function(req, res){
 });
 
 app.use(bot.incoming());
+app.use(express.static('www'));
+io.on('connection', function (socket) {
+		socket_io = socket;
+});
 
-app.listen(process.env.PORT || 8080, function(){
-	console.log('Server started on port ' + (process.env.PORT || 8080));
+var port = process.env.PORT || parseInt(process.argv.pop()) || 8080;
+server.listen(port, function(){
+    console.log("Server listening at port %d", port);
 });

@@ -1,0 +1,34 @@
+<!Doctype html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css" />
+</head>
+<body>
+    <h1>This is the location app</h1>
+    <div id="messages">
+    <script src="https://code.jquery.com/jquery-2.1.3.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.7.0/underscore.js"></script>
+    <script src="socket.io/socket.io.js"></script>
+    <script>
+        jQuery(document).ready(function () {
+            var socket = io(document.URL);
+            socket.on('receive message', function (data) {
+                if (navigator.geolocation) 
+                {
+                   navigator.geolocation.getCurrentPosition(function (position) {
+                        var data = {
+                            latitude: position.coords.latitude, 
+                            longitude:position.coords.longitude
+                        }; 
+                        socket.emit('receive message', data);
+                    });
+                 } 
+                
+                jQuery("#messages").append('<div><strong>' + _.escape(data.from) + ':&nbsp;&nbsp;</strong>' + _.escape(data.message) + "</div>");
+            });
+        });
+    </script>
+</body>
+
+</html>
