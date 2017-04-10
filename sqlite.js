@@ -6,7 +6,7 @@ db.serialize(function() {
  //db.run("INSERT INTO current_location VALUES (2,12.950806,77.597738, '2007-01-01 10:00:00')");
 // db.run("DELETE from users WHERE id=2");
 
-  db.run("INSERT INTO users VALUES (7,'Garry8711')");
+  //db.run("INSERT INTO users VALUES (7,'Garry8711')");
   });
 
 db.close();
