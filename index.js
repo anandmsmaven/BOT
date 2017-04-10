@@ -81,10 +81,6 @@ db.serialize(function() {
 	});
 });
 });
-// Set up your server and start listening
-//app.get('/', function(req, res){
-	//res.send('Hello. This is a demo Kik chatbot. Visit @hello.bot in Kik.');
-//});
 
 
 /**
