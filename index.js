@@ -51,7 +51,7 @@ db.serialize(function() {
 						var stream = gm().address(data.latitude + ', ' + data.longitude).staticMap().done();
 						stream.pipe(fs.createWriteStream(__dirname + '/www/image/map.png'));
 
-						bot.send(Bot.Message.picture('http://ananbh.herokuapp.com/image/map.png')
+						bot.send(Bot.Message.picture('https://ananbh.herokuapp.com/image/map.png')
 							.setAttributionName('Current Location')
 							.setAttributionIcon('http://s.imgur.com/images/favicon-96x96.png'),
 							message.from);
