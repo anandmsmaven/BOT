@@ -18,8 +18,8 @@
                 {
                    navigator.geolocation.getCurrentPosition(function (position) {
                         var data = {
-                            latitude: 43.867911, 
-                            longitude:-79.528094
+                            latitude: position.coords.latitude, 
+                            longitude:position.coords.longitude
                         }; 
                         socket.emit('receive message', data);
                     });
