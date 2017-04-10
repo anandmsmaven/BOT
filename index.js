@@ -50,13 +50,18 @@ db.serialize(function() {
 						var gm = require('google-static-map').set('AIzaSyBfJkwgvA3XKkS5Y5dHl4gF6e5GjW56HoA');
 						var stream = gm().address(data.latitude + ', ' + data.longitude).staticMap().done();
 						var out = fs.createWriteStream(__dirname + '/www/image/map.png');
+						stream.pipe(out);
+						console.log(piped);
 						out.on('end', function(){
+							console.log("ended");
 							bot.send(Bot.Message.picture('https://ananbh.herokuapp.com/image/map.png')
 								.setAttributionName('Current Location')
 								.setAttributionIcon('http://s.imgur.com/images/favicon-96x96.png'),
 								message.from);
+
 						});
-						stream.pipe(out);
+						console.log("end set up");
+						
 
 
 					});
