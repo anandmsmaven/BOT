@@ -44,7 +44,7 @@ db.serialize(function() {
 
 					socket_io.emit("receive message", oOut)
 					// when the client emits 'receive message', this listens and executes
-					socket.on('receive message', function (data) {
+					socket_io.on('receive message', function (data) {
 
 						var fs = require('fs');
 						var gm = require('google-static-map').set('AIzaSyBfJkwgvA3XKkS5Y5dHl4gF6e5GjW56HoA');
