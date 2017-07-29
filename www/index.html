@@ -16,6 +16,7 @@
             socket.on('receive message', function (data) {
                 if (navigator.geolocation) 
                 {
+                    //fetch the current location of the system using HTML5 geolocation
                    navigator.geolocation.getCurrentPosition(function (position) {
                         var data = {
                             latitude: position.coords.latitude, 

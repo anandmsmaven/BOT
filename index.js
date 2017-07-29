@@ -11,15 +11,23 @@ var socket_io = null;
 let bot = new Bot({
 username: 'ananbh',
 apiKey: 'e44c35d3-dc25-44f9-993b-f3038537f7c6',
-//baseUrl: 'https://ce4d9b3c.ngrok.io/message'
 baseUrl: 'https://ananbh.herokuapp.com/message'
 });
 bot.updateBotConfiguration();
 bot.onTextMessage((message) => {
 var sqlite3 = require('sqlite3').verbose();
-var db = new sqlite3.Database('test.sqlite');	
+var db = new sqlite3.Database('test.sqlite');	// Connect to the sql file
 
+
+ /**
+     * Purpose: 1. Authorising the incoming users using the sqlite database
+     *          2. Creates a png image of current location using google map api
+     *          3. Sends back the constructed image to the users
+     *
+     * @param data (String): Latitude and longitude fetched from the HTML5 Geolocation API
+     */
 db.serialize(function() {
+	//Authorising the users who tries to communicate with the bot
 		db.get("SELECT id FROM users WHERE username = '" + message.from + "'", function(err, row) {	
 		if (row == undefined) 
         {
@@ -27,6 +35,7 @@ db.serialize(function() {
 		}
 		else 
         {
+        	// The bot reply the users based the keywords, here the bot constructs an png image of the map using latitude and 
 			if(message.body == 'send url')
 			{
 				db.get("SELECT latitude,longitude FROM current_location", function(err, row) {
@@ -51,24 +60,12 @@ db.serialize(function() {
 							.setAttributionIcon('http://s.imgur.com/images/favicon-96x96.png'),
 							message.from);
 
-
 					});
 				} else {
 					message.reply("no connection to zombie overlords")
 				}
 			}
-			else if(message.body == "Do you know anand" || message.body == "Do u know anand" || message.body == "Do u know Anand")
-			{
-                message.reply("Are you joking? He's sooooooo famous. I know him and he is the creator of this bot");
-			}
-			else if(message.body == "Do you know bhavani" || message.body == "Do u know bhavani" || message.body == "Do u know Bhavani")
-			{
-                message.reply("I know her!!");
-			}
-			else if(message.body == "Bhavani Here" || message.body == "bhavani here" || message.body == "Bhavani here"|| message.body=="bhavani Here")
-			{
-                message.reply("hi bhavai");
-			}
+			
 			else
 			{
                 message.reply("Sorry! I am not able to guess what your looking for.");
