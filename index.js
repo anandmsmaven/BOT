@@ -65,6 +65,14 @@ db.serialize(function() {
 					message.reply("no connection to zombie overlords")
 				}
 			}
+
+			else if(message.body == "How are you today" || message.body == "how are u today"){
+                message.reply("I'm Doing great! Thank you");
+			}
+
+			else if(message.body == "Who created you" || message.body == "who created u"){
+                message.reply("Anand Rajendran created me!!");
+			}
 			
 			else
 			{
